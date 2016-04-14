@@ -13,8 +13,9 @@ class Ping(pong: ActorRef) extends Actor {
         incrementAndPrint
         pong ! PingMessage
     case PongMessage => 
+        Thread.sleep(2000)
         incrementAndPrint
-        if (count > 99) {
+        if (count > 10) {
           sender ! StopMessage
           println("ping stopped")
           context.stop(self)
@@ -27,6 +28,7 @@ class Ping(pong: ActorRef) extends Actor {
 class Pong extends Actor {
   def receive = {
     case PingMessage =>
+        Thread.sleep(500)
         println("  pong")
         sender ! PongMessage
     case StopMessage =>
